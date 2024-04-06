@@ -31,7 +31,7 @@ So, you should edit /etc/apparmor.d/usr.lib.libvirt.virt-aa-helper and usr.sbin.
 before `}`
 
 ## Qemu xml
-<domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="qemu">
+```<domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="qemu">
   <name>winxp-x86_64</name>
   <uuid>fecab037-56c0-4f65-9825-144de365bc86</uuid>
   <metadata>
@@ -142,7 +142,7 @@ before `}`
     <qemu:arg value="-L"/>
     <qemu:arg value="/usr/share/qemu"/>
   </qemu:commandline>
-</domain>
+</domain>```
 
 ## What stucked me for a long time
 I found the virtio SCSI driver is difficult to install. Finally, I download the virtio-win-0.1.173 from https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/ . The ISO file for SCSI driver is usable.
