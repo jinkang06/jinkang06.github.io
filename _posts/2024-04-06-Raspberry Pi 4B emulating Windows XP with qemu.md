@@ -3,7 +3,7 @@ layout:     post   				    # 使用的布局（不需要改）
 title:      Raspberry Pi 4B emulating Windows XP with qemu 				# 标题 
 subtitle:   Including installing drivers of the system #副标题
 date:       2024-04-06 				# 时间
-author:     BY Jinkang06						# 作者
+author:     Jinkang06						# 作者
 header-img: img/post-bg-2015.jpg 	#这篇文章标题背景图片
 catalog: true 						# 是否归档
 tags:								#标签
