@@ -147,6 +147,6 @@ before `}`
 ```
 
 ## What stucked me for a long time
-I found the virtio SCSI driver is difficult to install. Finally, I download the virtio-win-0.1.173 from https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/ . The ISO file for SCSI driver is usable.
+I found the virtio SCSI disk driver is difficult to install. Finally, I download the virtio-win-0.1.173 from https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/ . This ISO file for SCSI disk driver is usable.
 
 
