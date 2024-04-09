@@ -16,21 +16,26 @@ I used MicroXP 0.82 to install the system. As the CPU is rather weak for a full 
 
 ## Complie Qemu 8.22
 The default version of Qemu installed from apt can not assign more than one vCPU, so I decide to compile a latest version of Qemu. 
-I followed https://www.chrisrcook.com/2023/09/27/building-qemu-8-0-on-raspberry-pi-os/ to build the latest qemu, firstly, I installed the dependencies:
+I followed <a href="https://www.chrisrcook.com/2023/09/27/building-qemu-8-0-on-raspberry-pi-os/">this blog</a>  to build the latest qemu.
+
+Firstly, I installed the dependencies:
 sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build libaio-dev libbluetooth-dev libcapstone-dev libbrlapi-dev libbz2-dev libcap-ng-dev libcurl4-gnutls-dev libgtk-3-dev libibverbs-dev libjpeg9-dev libncurses5-dev libnuma-dev librbd-dev librdmacm-dev libsasl2-dev libsdl2-dev libseccomp-dev libsnappy-dev libssh-dev libvde-dev libvdeplug-dev libvte-2.91-dev libxen-dev liblzo2-dev valgrind xfslibs-dev libnfs-dev bison flex libiscsi-dev
-Then I download the source code from qemu.org, and run ./configure  --enable-spice --target-list=x86_64-softmmu
+
+Then, I download the source code from qemu.org, and run ./configure  --enable-spice --target-list=x86_64-softmmu --enable-kvm && make 
 
 ## Problems I met
-# bios-256k.bin not found, there are two reasons:
-1. The problem occured is due to the command `sudo make install` will copy the compiled files into /usr/local/share/qemu/, we can use `cp -p /usr/local/share/qemu/ -r /usr/share/qemu`.
-2. If you use virt-manager (Libvirtd), Apparmor will stop virt-manager to access the files in /usr/local/share/qemu/
-So, you should edit /etc/apparmor.d/usr.lib.libvirt.virt-aa-helper and usr.sbin.libvirtd. I added several lines into the two files:
+1 `bios-256k.bin not found`, there are two reasons:
+1. The problem occured is due to the command `sudo make install` will copy the compiled files into `/usr/local/share/qemu/`, we can use `cp -p /usr/local/share/qemu/ -r /usr/share/qemu`.
+2. If you use `virt-manager` (Libvirtd), Apparmor will stop `virt-manager` to access the files in `/usr/local/share/qemu/`
+So, you should edit `/etc/apparmor.d/usr.lib.libvirt.virt-aa-helper` and `usr.sbin.libvirtd`. I added several lines into the two files:
+```
 /usr/local/share/qemu/* r,
 /usr/local/bin/* r,
 /usr/share/qemu/* r,
-before `}`
+```
+before `}`.
 
-## Qemu xml
+## The currently used Qemu XML
 ```
 <domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="qemu">
   <name>winxp-x86_64</name>
@@ -147,6 +152,6 @@ before `}`
 ```
 
 ## What stucked me for a long time
-I found the virtio SCSI disk driver is difficult to install. Finally, I download the virtio-win-0.1.173 from https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/ . This ISO file for SCSI disk driver is usable.
+I found the virtio SCSI disk driver is difficult to install. Finally, I download the `virtio-win-0.1.173.iso` from `https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/` . This ISO file for SCSI disk driver is usable.
 
 
