@@ -12,7 +12,7 @@ tags:								#标签
 ---
 
 ## System
-I used MicroXP 0.82 to install the system. As the CPU is rather weak for a full installation of Windows XP.
+I used **MicroXP 0.82** to install the system. As the CPU is rather weak for a full installation of Windows XP.
 
 ## Complie Qemu 8.22
 The default version of Qemu installed from apt can not assign more than one vCPU, so I decide to compile a latest version of Qemu. 
@@ -26,10 +26,11 @@ sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ni
 Then, I download the source code from qemu.org, and run `./configure  --enable-spice --target-list=x86_64-softmmu --enable-kvm && make` 
 
 ## Problems I met
-1. `bios-256k.bin not found`, there are two reasons:
+### `bios-256k.bin not found`, there are two reasons:
 The problem occured is due to the command `sudo make install` will copy the compiled files into `/usr/local/share/qemu/`, we can use `cp -p /usr/local/share/qemu/ -r /usr/share/qemu`.
-
-2. If you use `virt-manager` (Libvirtd), Apparmor will stop `virt-manager` to access the files in `/usr/local/share/qemu/`
+### It is hard to install the disk SCSI driver in Windows XP
+I download the `virtio-win-0.1.173.iso` from `https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/` . This ISO file for SCSI disk driver is usable.
+### If you use `virt-manager` (Libvirtd), Apparmor will stop `virt-manager` to access the files in `/usr/local/share/qemu/`
 So, you should edit `/etc/apparmor.d/usr.lib.libvirt.virt-aa-helper` and `usr.sbin.libvirtd`. I added several lines into the two files:
 ```
 /usr/local/share/qemu/* r,
@@ -37,6 +38,11 @@ So, you should edit `/etc/apparmor.d/usr.lib.libvirt.virt-aa-helper` and `usr.sb
 /usr/share/qemu/* r,
 ```
 before `}`.
+
+### The myth in the number of vCPU cores:
+The Windows XP guest VM will degrade its speed when I assign more than one core to it.
+If I assign two more vCPUs, I can only observe 2 cores in the VM system.
+If I assign four vCPUs (raspberry pi 4b's maximum capacity), and force the topology of CPU with 4 cores, 1 thread, and 1 socket, the VM is hard to start normally because it is too slow!
 
 ## The currently used Qemu XML
 ```
@@ -153,8 +159,3 @@ before `}`.
   </qemu:commandline>
 </domain>
 ```
-
-## What stucked me for a long time
-I found the virtio SCSI disk driver is difficult to install. Finally, I download the `virtio-win-0.1.173.iso` from `https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/` . This ISO file for SCSI disk driver is usable.
-
-
