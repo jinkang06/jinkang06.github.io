@@ -43,6 +43,7 @@ before `}`.
 The Windows XP guest VM will degrade its speed when I assign more than one core to it.  
 If I assign two more vCPUs, I can only observe 2 cores in the VM system.  
 If I assign four vCPUs (raspberry pi 4b's maximum capacity), and force the topology of CPU with 4 cores, 1 thread, and 1 socket, the VM is hard to start normally because it is too slow!
+**Can any one help me about this?**
 
 ## The currently used Qemu XML
 ```
