@@ -19,13 +19,16 @@ The default version of Qemu installed from apt can not assign more than one vCPU
 I followed <a href="https://www.chrisrcook.com/2023/09/27/building-qemu-8-0-on-raspberry-pi-os/">this blog</a>  to build the latest qemu.
 
 Firstly, I installed the dependencies:
+```
 sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build libaio-dev libbluetooth-dev libcapstone-dev libbrlapi-dev libbz2-dev libcap-ng-dev libcurl4-gnutls-dev libgtk-3-dev libibverbs-dev libjpeg9-dev libncurses5-dev libnuma-dev librbd-dev librdmacm-dev libsasl2-dev libsdl2-dev libseccomp-dev libsnappy-dev libssh-dev libvde-dev libvdeplug-dev libvte-2.91-dev libxen-dev liblzo2-dev valgrind xfslibs-dev libnfs-dev bison flex libiscsi-dev
+```
 
-Then, I download the source code from qemu.org, and run ./configure  --enable-spice --target-list=x86_64-softmmu --enable-kvm && make 
+Then, I download the source code from qemu.org, and run `./configure  --enable-spice --target-list=x86_64-softmmu --enable-kvm && make` 
 
 ## Problems I met
 1 `bios-256k.bin not found`, there are two reasons:
-1. The problem occured is due to the command `sudo make install` will copy the compiled files into `/usr/local/share/qemu/`, we can use `cp -p /usr/local/share/qemu/ -r /usr/share/qemu`.
+The problem occured is due to the command `sudo make install` will copy the compiled files into `/usr/local/share/qemu/`, we can use `cp -p /usr/local/share/qemu/ -r /usr/share/qemu`.
+
 2. If you use `virt-manager` (Libvirtd), Apparmor will stop `virt-manager` to access the files in `/usr/local/share/qemu/`
 So, you should edit `/etc/apparmor.d/usr.lib.libvirt.virt-aa-helper` and `usr.sbin.libvirtd`. I added several lines into the two files:
 ```
