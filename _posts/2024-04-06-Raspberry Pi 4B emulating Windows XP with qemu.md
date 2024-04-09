@@ -13,16 +13,13 @@ tags:								#标签
 
 ## System
 I used **MicroXP 0.82** to install the system. As the CPU is rather weak for a full installation of Windows XP.
-
 ## Complie Qemu 8.22
 The default version of Qemu installed from apt can not assign more than one vCPU, so I decide to compile a latest version of Qemu. 
 I followed <a href="https://www.chrisrcook.com/2023/09/27/building-qemu-8-0-on-raspberry-pi-os/">this blog</a>  to build the latest qemu.
-
 Firstly, I installed the dependencies:
 ```
 sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build libaio-dev libbluetooth-dev libcapstone-dev libbrlapi-dev libbz2-dev libcap-ng-dev libcurl4-gnutls-dev libgtk-3-dev libibverbs-dev libjpeg9-dev libncurses5-dev libnuma-dev librbd-dev librdmacm-dev libsasl2-dev libsdl2-dev libseccomp-dev libsnappy-dev libssh-dev libvde-dev libvdeplug-dev libvte-2.91-dev libxen-dev liblzo2-dev valgrind xfslibs-dev libnfs-dev bison flex libiscsi-dev
 ```
-
 Then, I download the source code from qemu.org, and run `./configure  --enable-spice --target-list=x86_64-softmmu --enable-kvm && make` 
 
 ## Problems I met
@@ -38,13 +35,11 @@ So, you should edit `/etc/apparmor.d/usr.lib.libvirt.virt-aa-helper` and `usr.sb
 /usr/share/qemu/* r,
 ```
 before `}`.
-
 ### 4. The myth in the number of vCPU cores:
 The Windows XP guest VM will degrade its speed when I assign more than one core to it.  
 If I assign two more vCPUs, I can only observe 2 cores in the VM system.  
 If I assign four vCPUs (raspberry pi 4b's maximum capacity), and force the topology of CPU with 4 cores, 1 thread, and 1 socket, the VM is hard to start normally because it is too slow!
 **Can any one help me about this?**
-
 ## The currently used Qemu XML
 ```
 <domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="qemu">
