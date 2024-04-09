@@ -40,8 +40,8 @@ So, you should edit `/etc/apparmor.d/usr.lib.libvirt.virt-aa-helper` and `usr.sb
 before `}`.
 
 ### 4. The myth in the number of vCPU cores:
-The Windows XP guest VM will degrade its speed when I assign more than one core to it.
-If I assign two more vCPUs, I can only observe 2 cores in the VM system.
+The Windows XP guest VM will degrade its speed when I assign more than one core to it.  
+If I assign two more vCPUs, I can only observe 2 cores in the VM system.  
 If I assign four vCPUs (raspberry pi 4b's maximum capacity), and force the topology of CPU with 4 cores, 1 thread, and 1 socket, the VM is hard to start normally because it is too slow!
 
 ## The currently used Qemu XML
