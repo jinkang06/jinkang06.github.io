@@ -26,7 +26,7 @@ sudo apt-get install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ni
 Then, I download the source code from qemu.org, and run `./configure  --enable-spice --target-list=x86_64-softmmu --enable-kvm && make` 
 
 ## Problems I met
-1 `bios-256k.bin not found`, there are two reasons:
+1. `bios-256k.bin not found`, there are two reasons:
 The problem occured is due to the command `sudo make install` will copy the compiled files into `/usr/local/share/qemu/`, we can use `cp -p /usr/local/share/qemu/ -r /usr/share/qemu`.
 
 2. If you use `virt-manager` (Libvirtd), Apparmor will stop `virt-manager` to access the files in `/usr/local/share/qemu/`
