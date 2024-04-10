@@ -42,7 +42,7 @@ If I assign four vCPUs (raspberry pi 4b's maximum capacity), and force the topol
 **Can any one help me about this?**
 ## The currently used Qemu XML
 ```
-<domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="qemu">
+<domain type='qemu' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
   <name>winxp-x86_64</name>
   <uuid>fecab037-56c0-4f65-9825-144de365bc86</uuid>
   <metadata>
@@ -50,108 +50,102 @@ If I assign four vCPUs (raspberry pi 4b's maximum capacity), and force the topol
       <libosinfo:os id="http://microsoft.com/win/xp"/>
     </libosinfo:libosinfo>
   </metadata>
-  <memory unit="KiB">786432</memory>
-  <currentMemory unit="KiB">786432</currentMemory>
-  <vcpu placement="static">1</vcpu>
+  <memory unit='KiB'>512000</memory>
+  <currentMemory unit='KiB'>512000</currentMemory>
+  <memoryBacking>
+    <source type='memfd'/>
+    <access mode='shared'/>
+  </memoryBacking>
+  <vcpu placement='static'>1</vcpu>
   <os>
-    <type arch="x86_64" machine="pc-i440fx-7.2">hvm</type>
-    <boot dev="hd"/>
-    <bootmenu enable="yes"/>
+    <type arch='x86_64' machine='pc-i440fx-7.2'>hvm</type>
+    <boot dev='hd'/>
+    <bootmenu enable='yes'/>
   </os>
   <features>
     <acpi/>
     <apic/>
-    <hyperv mode="custom">
-      <relaxed state="on"/>
-      <vapic state="on"/>
-      <spinlocks state="off"/>
+    <hyperv mode='custom'>
+      <relaxed state='on'/>
+      <vapic state='on'/>
+      <spinlocks state='on' retries='8191'/>
     </hyperv>
-    <vmport state="off"/>
+    <vmport state='off'/>
   </features>
-  <cpu mode="custom" match="exact" check="partial">
-    <model fallback="allow">qemu64</model>
+  <cpu mode='custom' match='exact' check='none'>
+    <model fallback='forbid'>qemu64</model>
+    <topology sockets='1' dies='1' cores='1' threads='1'/>
   </cpu>
-  <clock offset="localtime">
-    <timer name="rtc" tickpolicy="catchup"/>
-    <timer name="pit" tickpolicy="delay"/>
-    <timer name="hypervclock" present="yes"/>
+  <clock offset='localtime'>
+    <timer name='hpet' present='yes'/>
+    <timer name='hypervclock' present='yes'/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
   <on_crash>destroy</on_crash>
   <pm>
-    <suspend-to-mem enabled="no"/>
-    <suspend-to-disk enabled="yes"/>
+    <suspend-to-mem enabled='no'/>
+    <suspend-to-disk enabled='no'/>
   </pm>
   <devices>
     <emulator>/usr/local/bin/qemu-system-x86_64</emulator>
-    <disk type="file" device="disk">
-      <driver name="qemu" type="raw"/>
-      <source file="/VMs/winxp.img"/>
-      <target dev="vda" bus="virtio"/>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x04" function="0x0"/>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='raw' io='threads'/>
+      <source file='/VMs/winxp.img'/>
+      <backingStore/>
+      <target dev='vda' bus='virtio'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
     </disk>
-    <disk type="file" device="disk">
-      <driver name="qemu" type="raw"/>
-      <source file="/VMs/vol.img"/>
-      <target dev="vdb" bus="virtio"/>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x06" function="0x0"/>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='raw' io='threads'/>
+      <source file='/VMs/vol.img'/>
+      <target dev='vdb' bus='virtio'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
     </disk>
-    <disk type="file" device="cdrom">
-      <driver name="qemu" type="raw"/>
-      <source file="/mnt/myusbdrive/softwares/MicroXP-v0.82.iso"/>
-      <target dev="hda" bus="ide"/>
-      <readonly/>
-      <address type="drive" controller="0" bus="0" target="0" unit="0"/>
-    </disk>
-    <controller type="usb" index="0" model="ich9-ehci1">
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x05" function="0x7"/>
+    <controller type='usb' index='0' model='ich9-ehci1'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x7'/>
     </controller>
-    <controller type="usb" index="0" model="ich9-uhci1">
-      <master startport="0"/>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x05" function="0x0" multifunction="on"/>
+    <controller type='usb' index='0' model='ich9-uhci1'>
+      <master startport='0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0' multifunction='on'/>
     </controller>
-    <controller type="usb" index="0" model="ich9-uhci2">
-      <master startport="2"/>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x05" function="0x1"/>
+    <controller type='usb' index='0' model='ich9-uhci2'>
+      <master startport='2'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x1'/>
     </controller>
-    <controller type="usb" index="0" model="ich9-uhci3">
-      <master startport="4"/>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x05" function="0x2"/>
+    <controller type='usb' index='0' model='ich9-uhci3'>
+      <master startport='4'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x2'/>
     </controller>
-    <controller type="pci" index="0" model="pci-root"/>
-    <controller type="ide" index="0">
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x01" function="0x1"/>
-    </controller>
-    <controller type="scsi" index="0" model="virtio-scsi">
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x08" function="0x0"/>
-    </controller>
-    <interface type="bridge">
-      <mac address="52:54:00:45:4d:cd"/>
-      <source bridge="br0"/>
-      <model type="virtio"/>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
+    <controller type='pci' index='0' model='pci-root'/>
+    <interface type='network'>
+      <mac address='52:54:00:e4:d4:ee'/>
+      <source network='default'/>
+      <model type='virtio'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
     </interface>
-    <input type="mouse" bus="ps2"/>
-    <input type="keyboard" bus="ps2"/>
-    <input type="tablet" bus="usb">
-      <address type="usb" bus="0" port="1"/>
+    <input type='mouse' bus='ps2'/>
+    <input type='keyboard' bus='ps2'/>
+    <input type='tablet' bus='usb'>
+      <address type='usb' bus='0' port='1'/>
     </input>
-    <graphics type="vnc" port="5901" autoport="no" listen="0.0.0.0">
-      <listen type="address" address="0.0.0.0"/>
+    <graphics type='vnc' port='5901' autoport='no' listen='0.0.0.0'>
+      <listen type='address' address='0.0.0.0'/>
     </graphics>
-    <audio id="1" type="none"/>
+    <audio id='1' type='none'/>
     <video>
-      <model type="qxl" ram="65536" vram="65536" vgamem="16384" heads="1" primary="yes"/>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x0"/>
+      <model type='qxl' ram='65536' vram='65536' vgamem='65536' heads='1' primary='yes'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
     </video>
-    <memballoon model="virtio">
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x07" function="0x0"/>
+    <memballoon model='virtio'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
     </memballoon>
   </devices>
   <qemu:commandline>
-    <qemu:arg value="-L"/>
-    <qemu:arg value="/usr/share/qemu"/>
+    <qemu:arg value='-L'/>
+    <qemu:arg value='/usr/share/qemu'/>
   </qemu:commandline>
 </domain>
+
+
 ```
